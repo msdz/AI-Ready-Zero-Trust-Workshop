@@ -28,7 +28,7 @@ Assessment 将评估以下安全支柱：
 
 ---
 
-# 实验目标
+## 实验目标
 
 完成本练习后，您将能够：
 
@@ -46,7 +46,7 @@ Assessment 将评估以下安全支柱：
 
 ---
 
-# 实验前提条件
+## 实验前提条件
 
 在开始实验之前，请确认：
 
@@ -58,9 +58,9 @@ Assessment 将评估以下安全支柱：
 
 ---
 
-# Exercise 2.1 安装 Zero Trust Assessment
+## Exercise 2.1 安装 Zero Trust Assessment
 
-## Step 1
+### Step 1
 
 以管理员身份打开：
 
@@ -68,7 +68,7 @@ Assessment 将评估以下安全支柱：
 
 ---
 
-## Step 2
+### Step 2
 
 执行以下命令安装评估模块：
 
@@ -90,9 +90,9 @@ Install-Module ZeroTrustAssessment -Scope CurrentUser
 
 ---
 
-# Exercise 2.2 连接 Microsoft 365 租户
+## Exercise 2.2 连接 Microsoft 365 租户
 
-## Step 1
+### Step 1
 
 执行：
 
@@ -102,7 +102,7 @@ Connect-ZtAssessment
 
 ---
 
-## Step 2
+### Step 2
 
 根据提示登录 Microsoft 365 租户。
 
@@ -120,7 +120,7 @@ Connect-ZtAssessment
 
 ---
 
-## Step 3
+### Step 3
 
 选择：
 
@@ -132,7 +132,7 @@ Accept
 
 ---
 
-## 验证成功
+### 验证成功
 
 连接成功后应看到类似提示：
 
@@ -144,9 +144,9 @@ Connected successfully
 
 ---
 
-# Exercise 2.3 运行 Assessment
+## Exercise 2.3 运行 Assessment
 
-## Step 1
+### Step 1
 
 执行评估命令：
 
@@ -156,7 +156,7 @@ Invoke-ZtAssessment
 
 ---
 
-## Step 2
+### Step 2
 
 等待评估完成。
 
@@ -164,7 +164,7 @@ Assessment 将根据当前版本和已授予的权限收集租户配置并执行
 
 ---
 
-## Assessment 内容
+### Assessment 内容
 
 本练习使用的版本可能评估以下支柱；实际结果以报告中显示的支柱为准：
 
@@ -180,7 +180,7 @@ Assessment 将根据当前版本和已授予的权限收集租户配置并执行
 
 ---
 
-## Step 3
+### Step 3
 
 评估完成后，系统将生成结果文件。
 
@@ -192,9 +192,9 @@ Assessment Complete
 
 ---
 
-# Exercise 2.4 查看 Assessment 报告
+## Exercise 2.4 查看 Assessment 报告
 
-## Step 1
+### Step 1
 
 打开生成的 Assessment 报告。
 
@@ -205,13 +205,13 @@ Assessment Complete
 
 ---
 
-## Step 2
+### Step 2
 
 在浏览器中打开 HTML 报告。
 
 查看：
 
-### Assessment Overview
+#### Assessment Overview
 
 记录以下信息：
 
@@ -222,7 +222,7 @@ Assessment Complete
 
 ---
 
-## Step 3
+### Step 3
 
 查看 Summary 页面。
 
@@ -240,9 +240,9 @@ Assessment Complete
 
 ---
 
-# Exercise 2.5 分析评估结果
+## Exercise 2.5 分析评估结果
 
-## 查看 Recommendations
+### 查看 Recommendations
 
 在报告中定位：
 
@@ -256,7 +256,7 @@ Assessment 将根据检测结果提供整改建议。
 
 ---
 
-## 查看 Gaps
+### 查看 Gaps
 
 在报告中查找：
 
@@ -276,27 +276,27 @@ Not Implemented
 
 ---
 
-## 记录发现
+### 记录发现
 
 请记录三项最需要关注的问题：
 
-### 问题 1
+#### 问题 1
 
 _________________________________
 
-### 问题 2
+#### 问题 2
 
 _________________________________
 
-### 问题 3
+#### 问题 3
 
 _________________________________
 
 ---
 
-# Exercise 2.6 查看 AI 安全成熟度
+## Exercise 2.6 查看 AI 安全成熟度
 
-## AI Security
+### AI Security
 
 定位：
 
@@ -310,7 +310,7 @@ AI
 
 ---
 
-## 思考
+### 思考
 
 如果组织计划部署：
 
@@ -330,7 +330,7 @@ _________________________________
 
 ---
 
-# 验证成功
+## 验证成功
 
 如果您已完成以下任务，则本练习完成：
 
@@ -348,7 +348,7 @@ _________________________________
 
 ---
 
-## 完成实验
+### 完成实验
 
 返回：
 
@@ -356,7 +356,7 @@ _________________________________
 
 ---
 
-# 小结
+## 小结
 
 在本练习中，您使用 Microsoft Zero Trust Assessment 对 Microsoft 365 租户进行了安全评估，并获得了：
 
@@ -369,7 +369,7 @@ _________________________________
 
 ---
 
-## 后续实验
+### 后续实验
 
 完成本实验后，请继续进行：
 
