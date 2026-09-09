@@ -1,8 +1,8 @@
 ---
-lab:
   title: 查看 Zero Trust Assessment 报告
   description: 在本练习中，您将打开 Microsoft Zero Trust Assessment 报告，并了解企业当前安全成熟度情况。
   duration: 10 分钟
+  layout: default
 ---
 
 # Exercise 1 - 查看 Zero Trust Assessment 报告

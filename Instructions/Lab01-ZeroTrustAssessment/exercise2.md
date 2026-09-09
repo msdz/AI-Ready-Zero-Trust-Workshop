@@ -1,15 +1,8 @@
 ---
-lab:
   title: 评估 Microsoft 365 租户安全性
   description: 在本练习中，您将安装 Microsoft Zero Trust Assessment，连接 Microsoft 365 租户，并生成安全成熟度评估报告。
   duration: 20 分钟
-  level: 300
-  islab: true
-  primarytopics:
-    - Microsoft Entra ID
-    - Microsoft Security
-    - Zero Trust
-    - Microsoft 365
+  layout: default
 ---
 
 # Exercise 2 - 评估 Microsoft 365 租户安全性

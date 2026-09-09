@@ -1,6 +1,6 @@
 ---
 lab:
-  title: 零信任评估（Zero Trust Assessment）
+  title: 实验 01 - 零信任评估（Zero Trust Assessment）
   description: 在本实验中，您将了解 Microsoft Zero Trust Assessment 的核心功能，查看企业安全成熟度评估结果，并识别 Zero Trust 建设过程中的关键改进方向。
   duration: 15 分钟
   level: 200

@@ -1,8 +1,8 @@
 ---
-lab:
   title: Lab06 - AI Apps File Access Validation (Instructor Guide)
   description: Microsoft 365 Copilot 数据访问与数据治理验证实验环境准备手册
   audience: Instructor
+  published: false
 ---
 
 # Lab06 - AI Apps File Access Validation
