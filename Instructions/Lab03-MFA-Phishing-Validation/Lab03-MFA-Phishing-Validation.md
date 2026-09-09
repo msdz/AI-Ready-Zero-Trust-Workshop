@@ -10,7 +10,7 @@ lab:
     - Multi-Factor Authentication
     - Identity Security
     - Zero Trust
-   在手机上安装讲师指定的身份验证器。默认建议使用 Microsoft Authenticator；只有在租户已启用 OATH 软件令牌并提供对应注册二维码时，才使用第三方 TOTP 应用。
+---
 
 # 实验 03 - MFA 防钓鱼验证
 
