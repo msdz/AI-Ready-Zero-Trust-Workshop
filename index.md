@@ -28,6 +28,8 @@ layout: home
 
 ## 实验列表
 
+[实验账户验证](./Instructions/00-Setup/00-setup.html)
+
 {% assign labs = site.pages | where_exp:"page", "page.url contains '/Instructions/Lab'" %}
 {% assign labs = labs | sort: "lab.title" %}
 {% for activity in labs  %}

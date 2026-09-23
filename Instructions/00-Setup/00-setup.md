@@ -268,6 +268,8 @@ Microsoft Entra Roles
 Eligible Assignments
 ```
 
+> 或者直接跳转进入： [Privileged Identity Management](https://entra.microsoft.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/PrivilegedIdentityManagement)
+
 检查以下角色：
 
 ```text
@@ -291,6 +293,8 @@ Eligible Assignments
 
 没有Active Assignment
 ```
+
+![](./media/pim-eligible-assignments.png)
 
 ---
 
