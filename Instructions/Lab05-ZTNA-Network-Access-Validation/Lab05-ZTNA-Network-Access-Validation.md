@@ -1,8 +1,8 @@
 ---
 lab:
-  title: 实验 05 - ZTNA 网络访问验证
-  description: 在本实验中，您将体验 Microsoft Global Secure Access 提供的 Zero Trust Network Access（ZTNA）能力，并验证用户、设备与网络访问控制如何共同保护企业资源。
-  duration: 25 分钟
+  title: 实验 05 - Global Secure Access 与 ZTNA 验证
+  description: 体验 Microsoft Global Secure Access 提供的 Zero Trust Network Access（ZTNA）能力，验证身份、设备和访问策略如何共同保护企业资源。
+  duration: 20 分钟
   level: 200
   islab: true
   primarytopics:
@@ -13,314 +13,249 @@ lab:
     - Network Security
 ---
 
-# 实验 05 - ZTNA 网络访问验证
-
-## 概述
-
-在前面的实验中，您已经验证：
-
-✅ 用户身份可信（MFA）
-
-✅ 设备可信（Compliant Device）
-
-但是传统网络访问可能存在一个问题：
-
-```text
-VPN 连接成功可能获得较宽的网络级访问范围；实际风险取决于网络分段、路由、防火墙和访问策略。
-```
-
-攻击者一旦获取 VPN 访问权限，且网络缺少细粒度隔离，
-
-往往可以横向移动（Lateral Movement），访问更多内部系统。
-
-Zero Trust Network Access（ZTNA）采用：
-
-```text
-每次访问都验证
-```
-
-的原则。
-
-只有同时满足：
-
-- 用户可信
-- 设备可信
-- 网络策略允许
-
-访问请求才会被放行。
-
----
+# 实验 05 - Global Secure Access 与 ZTNA 验证
 
 ## 实验目标
 
 完成本实验后，您将能够：
 
+✅ 激活 Global Secure Access Administrator
+
+✅ 了解 Global Secure Access 架构
+
 ✅ 理解传统 VPN 与 ZTNA 的区别
 
-✅ 理解 Global Secure Access 架构
+✅ 验证基于身份和设备的访问控制
 
-✅ 验证内部应用访问控制
+✅ 查看访问日志
 
-✅ 查看 ZTNA 审计日志
-
-✅ 理解 Zero Trust Network 原则
+✅ 理解 Zero Trust 网络访问原则
 
 ---
 
-## 实验场景
+# 实验场景
 
-Contoso 公司拥有多个内部业务系统：
-
-- ERP 系统
-- CRM 系统
-- HR 系统
-
-这些系统部署在企业内部网络中。
+Contoso 公司正在建设 Zero Trust 网络架构。
 
 企业希望：
 
 ```text
-不向公网直接暴露应用，并按用户、设备和应用授权访问
+不依赖传统 VPN
+
+而是基于：
+
+用户身份
+设备状态
+访问策略
+
+控制企业资源访问
 ```
 
-因此采用：**Microsoft Global Secure Access（GSA）** 构建 Zero Trust 网络访问架构。学员设备仍需按讲师要求安装并登录 Global Secure Access 客户端，具体客户端和许可要求以现场环境为准。
-
----
-
-## 讲师环境说明
-
-> [!IMPORTANT]
->
-> 以下内容由讲师提前准备。
->
-> 学员无需执行。
-
----
-
-### 服务器环境
-
-实验环境包含：
-
-| 资源 | 说明 |
-|--------|--------|
-| Server01 | ERP Portal |
-| Server02 | CRM Portal |
-| Server03 | HR Portal |
-
-服务器仅开放内网访问。
-
-公网无法直接连接。
-
----
-
-### Entra Private Access Connector
-
-服务器网段部署：
+因此部署：
 
 ```text
-Microsoft Entra Private Access Connector
+Microsoft Global Secure Access
 ```
 
-负责建立：
+实现：
 
 ```text
-内部网络 ↔ Global Secure Access
-```
-
-安全通道。
-
----
-
-### 身份认证
-
-访问控制基于：
-
-```text
-Microsoft Entra ID
-```
-
-验证：
-
-- 用户身份
-- MFA状态
-- 设备状态
-
----
-
-### 条件访问策略
-
-访问内部应用时要求：
-
-```text
-Require MFA  
-AND 
-Require Compliant Device
+Zero Trust Network Access（ZTNA）
 ```
 
 ---
 
-### 网络架构
+# 任务1 激活实验角色
+
+使用：
 
 ```text
-User
- ↓
-Entra ID
- ↓
+zta-adminXX
+```
+
+登录：
+
+```text
+https://entra.microsoft.com
+```
+
+进入：
+
+```text
+Identity Governance
+↓
+Privileged Identity Management
+↓
+My Roles
+```
+
+找到：
+
+```text
+Global Secure Access Administrator
+```
+
+中文：
+
+```text
+全局安全访问管理员
+```
+
+点击：
+
+```text
+Activate
+```
+
+完成：
+
+```text
 MFA
- ↓
-Compliance Check
- ↓
+```
+
+输入理由：
+
+```text
+Lab05 - ZTNA Validation
+```
+
+提交激活。
+
+---
+
+## 验证结果
+
+确认：
+
+```text
+Global Secure Access Administrator
+
+↓
+
+Active
+```
+
+记录到期时间：
+
+```text
+____________________
+```
+
+---
+
+# 任务2 查看 Global Secure Access
+
+使用管理员账户进入：
+
+```text
 Global Secure Access
- ↓
-Private Access Connector
- ↓
-Internal Application
 ```
 
----
-
-## 登录实验设备
-
-### Step 1
-
-使用实验账号：
+查看：
 
 ```text
-以实际实验账户为准。
+Dashboard
 ```
 
-登录实验设备。
-
----
-
-### Step 2
-
-完成 MFA 验证。
-
-确保登录成功。
-
----
-
-## 访问企业应用
-
-### Step 1
-
-打开浏览器。
-
-访问：
+观察：
 
 ```text
-ERP Portal
+Internet Access
+
+Private Access
+
+Secure Web Gateway
 ```
 
-实验地址由讲师在实验开始时提供，请记录：
+记录看到的服务：
 
 ```text
-ERP Portal URL：____________________________
+________________________________
+
+________________________________
 ```
 
 ---
 
-### Step 2
+# 任务3 查看访问策略
 
-观察系统行为。
+讲师展示实验环境配置。
 
-记录结果：
-
-□ 成功访问
-
-□ 被拒绝访问
-
----
-
-### Step 3
-
-打开：
+观察：
 
 ```text
-CRM Portal
+条件访问策略
+
+Global Secure Access策略
+
+应用访问策略
 ```
-
-实验地址由讲师在实验开始时提供，请记录：
-
-```text
-CRM Portal URL：____________________________
-```
-
----
-
-### Step 4
-
-验证页面是否能够正常打开。
 
 记录：
 
-□ 成功
-
-□ 失败
-
----
-
-## 验证 HR Portal（如本次环境已部署）
-
-打开讲师提供的 HR Portal 地址，记录成功或失败结果。若本次 Workshop 未部署 HR Portal，讲师应在开始前明确说明，本步骤跳过。
-
----
-
-## 验证访问控制
-
-### Step 1
-
-讲师演示：
-
-使用未授权设备访问同一资源。
-
-观察结果。
-
----
-
-### Step 2
-
-记录现象：
-
-| 场景 | 结果 |
-|--------|--------|
-| 合规设备 | ______ |
-| 非合规设备 | ______ |
-
----
-
-### 分析
-
-为什么同一个账号：
-
 ```text
-以实际实验账户为准。
+□ Require MFA
+
+□ Require Compliant Device
+
+□ 指定用户组
+
+□ 指定应用访问
 ```
 
-在不同设备上得到不同结果？
+---
 
-____________________________________
+# 任务4 使用普通用户访问资源
 
-____________________________________
+使用：
+
+```text
+zta-userXX
+```
+
+登录。
+
+在：
+
+```text
+Intune 合规设备
+```
+
+上访问讲师提供的实验资源。
+
+示例：
+
+```text
+SharePoint
+
+Web App
+
+Private App
+
+测试站点
+```
+
+实际资源以讲师提供为准。
 
 ---
 
-## 查看访问日志
+记录：
 
-### Step 1
+```text
+□ 成功访问
 
-讲师打开：
+□ 被阻止访问
+```
+
+---
+
+# 任务5 查看访问日志
+
+使用管理员账户进入：
 
 ```text
 Global Secure Access
 ```
-
-控制台。
-
----
-
-### Step 2
 
 查看：
 
@@ -336,137 +271,294 @@ Activity Logs
 
 ---
 
-### Step 3
-
-观察以下信息：
+记录：
 
 | 项目 | 内容 |
 |--------|--------|
-| User | ______ |
-| Application | ______ |
-| Device | ______ |
-| Access Result | ______ |
+| User | __________ |
+| Application | __________ |
+| Device | __________ |
+| Access Result | __________ |
 
 ---
 
-### 思考
+## 思考
 
-为什么 Zero Trust 需要记录每一次访问？
+日志记录了哪些内容？
 
-__________________________________
+________________________________
 
-__________________________________
+________________________________
+
+________________________________
 
 ---
 
-## VPN 与 ZTNA 对比
+# 任务6 验证访问控制
 
-### 传统 VPN
+讲师演示：
+
+```text
+非合规设备
+
+或
+
+未授权设备
+
+访问同一资源
+```
+
+观察结果。
+
+---
+
+记录：
+
+| 场景 | 结果 |
+|--------|--------|
+| 合规设备 | __________ |
+| 非合规设备 | __________ |
+
+---
+
+## 思考
+
+为什么相同用户：
+
+```text
+zta-userXX
+```
+
+在不同设备上可能得到不同结果？
+
+________________________________
+
+________________________________
+
+________________________________
+
+---
+
+# VPN 与 ZTNA 对比
+
+## 传统 VPN
 
 ```text
 连接网络
+
 ↓
-获得内网访问权限
+
+获得网络访问能力
+
 ↓
+
 持续信任
 ```
 
 ---
 
-### ZTNA
+## ZTNA
 
 ```text
 验证身份
+
 ↓
-验证MFA
+
+验证 MFA
+
 ↓
+
 验证设备
+
 ↓
-验证应用权限
+
+验证授权资源
+
 ↓
+
 允许访问
 ```
 
 ---
 
-### 比较
+## 对比分析
 
-请填写：
-
-| 项目 | VPN | ZTNA |
+| 项目 | 传统 VPN | ZTNA |
 |--------|--------|--------|
-| 身份验证 | ______ | ______ |
-| 设备验证 | ______ | ______ |
-| 应用级控制 | ______ | ______ |
-| 持续验证 | ______ | ______ |
+| 用户验证 | 登录时验证 | 持续验证 |
+| MFA | 可选 | 推荐 |
+| 设备验证 | 通常较弱 | 核心要求 |
+| 应用级控制 | 较少 | 支持 |
+| 条件访问 | 较少 | 深度集成 |
+| Zero Trust | 有限 | 原生支持 |
 
 ---
 
-## Zero Trust 网络原则
+# Zero Trust 网络原则
 
-本实验实际验证：
+本实验验证：
 
 ```text
-可信身份
-+
-可信设备
-+
-授权应用
-=
-允许访问
+IF
+
+User = Valid
+
+AND
+
+MFA = Success
+
+AND
+
+Device = Compliant
+
+AND
+
+Application = Authorized
+
+THEN
+
+Allow Access
 ```
+
+---
 
 不是：
 
 ```text
 连接网络
+
 =
+
+自动获得信任
+```
+
+---
+
+# AI 时代的网络安全
+
+Contoso 正在部署：
+
+- Microsoft 365 Copilot
+- Enterprise Search
+- AI Agent
+
+---
+
+## 思考
+
+如果攻击者通过：
+
+```text
+未授权设备
+
+或
+
+非合规设备
+```
+
+访问企业资源，
+
+可能获得：
+
+```text
+□ 邮件
+
+□ Teams 信息
+
+□ SharePoint 文件
+
+□ 企业知识库
+
+□ Copilot 相关数据
+```
+
+---
+
+## 讨论
+
+为什么部署 AI 之前需要完成：
+
+```text
+身份治理
+
++
+
+设备治理
+
++
+
+ZTNA
+```
+
+建设？
+
+________________________________
+
+________________________________
+
+________________________________
+
+---
+
+# 实验验证
+
+完成以下任务：
+
+```text
+□ 已激活 Global Secure Access Administrator
+
+□ 已查看 Global Secure Access 服务
+
+□ 已查看访问策略
+
+□ 已使用普通用户访问实验资源
+
+□ 已查看访问日志
+
+□ 已理解 VPN 与 ZTNA 的区别
+
+□ 已理解 Global Secure Access 架构
+
+□ 已理解 Zero Trust 网络原则
+```
+
+---
+
+# 实验总结
+
+本实验验证：
+
+```text
+可信身份
+
++
+
+可信设备
+
++
+
+授权应用
+
+=
+
+允许访问
+```
+
+而不是：
+
+```text
+连接网络
+
+=
+
 获得信任
 ```
 
----
-
-## 验证成功
-
-如果您已完成以下任务，则本实验完成：
-
-✅ 成功访问 ERP Portal
-
-✅ 成功访问 CRM Portal
-
-✅ 观察条件访问效果
-
-✅ 查看访问日志
-
-✅ 理解 VPN 与 ZTNA 差异
-
-✅ 理解 Global Secure Access 架构
-
----
-
-## 实验总结
-
-在本实验中，您体验了：
-
-```text
-Zero Trust Network Access（ZTNA）
-```
-
-访问过程。
-
-访问企业资源时，
-
-系统持续验证：
-
-- 用户身份
-- MFA状态
-- 设备状态
-- 应用权限
-
-从而实现：
+Global Secure Access 实现了：
 
 ```text
 Never Trust
+
 Always Verify
 ```
 

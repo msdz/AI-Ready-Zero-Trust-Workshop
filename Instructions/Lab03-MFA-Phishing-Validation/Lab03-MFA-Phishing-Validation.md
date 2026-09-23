@@ -1,59 +1,89 @@
 ---
 lab:
-  title: 实验 03 - MFA 防钓鱼验证
-  description: 在本实验中，您将体验多因素身份验证（MFA）的完整过程，验证密码泄露场景下的身份保护能力，并理解 Zero Trust 身份安全原则。
+  title: 实验 03 - 身份验证与抗钓鱼 MFA 验证
+  description: 在本实验中，您将体验 Microsoft Entra MFA 身份验证流程，验证密码泄露场景下的身份保护能力，并理解 Microsoft 推荐的 Phishing-resistant MFA（抗钓鱼 MFA）最佳实践。
   duration: 20 分钟
   level: 200
   islab: true
   primarytopics:
     - Microsoft Entra ID
     - Multi-Factor Authentication
-    - Identity Security
+    - Authentication Strength
+    - Passwordless Authentication
+    - Phishing-resistant MFA
     - Zero Trust
 ---
 
-# 实验 03 - MFA 防钓鱼验证
+# 实验 03 - 身份验证与抗钓鱼 MFA 验证
 
-## 概述
+## 实验背景
 
-在实验 02 中，您已经通过 Zero Trust Assessment 发现身份安全是企业安全体系最重要的组成部分。
+在前面的实验中，您已经了解：
 
-攻击者最常见的攻击方式之一是：
+```text
+Identity
+是 Zero Trust 的核心控制面
+```
+
+攻击者最常见的攻击方式之一：
 
 ```text
 钓鱼邮件
-窃取账号密码
+
 ↓
+
+窃取账号密码
+
+↓
+
 登录企业系统
 ```
 
-如果企业仅依赖用户名和密码进行身份验证，
-   > 第三方 TOTP 应用只有在租户允许 OATH 软件令牌、账号已完成对应注册，并且讲师提供的是 Entra 生成的注册二维码时才可用。若租户要求 Microsoft Authenticator、号码匹配或其他认证方式，请按租户配置操作。
+如果企业仅依赖：
 
-攻击者一旦获得密码便能够访问企业资源。
+```text
+用户名
++
+密码
+```
 
-Microsoft Entra 多因素身份验证（MFA）通过增加额外验证步骤，即使密码已经泄露，也能够有效阻止未授权访问。
+进行身份验证，
 
-在本实验中，您将体验完整的 MFA 登录流程，并验证 MFA 对账号安全的保护能力。
+攻击者一旦获得密码便有可能访问企业资源。
+
+Microsoft Entra 通过：
+
+- MFA
+- Authentication Strength
+- Passwordless Authentication
+- Passkey
+- Phishing-resistant MFA
+
+等能力降低账号被盗风险。
 
 ---
 
 ## 实验目标
 
+完成本实验后，您将能够：
 
-✅ 理解密码攻击风险
+✅ 理解密码泄露攻击场景
 
-✅ 理解 MFA 工作原理
+✅ 理解 Multi-Factor Authentication（MFA）
 
-✅ 使用身份验证器完成验证
+✅ 理解 Authentication Strength
 
-✅ 体验动态验证码登录流程
+✅ 完成 MFA 登录验证
 
-✅ 验证密码泄露场景下的安全防护能力
+✅ 验证密码泄露场景下的访问控制效果
 
-✅ 理解身份验证在 Zero Trust 中的重要作用
+✅ 理解 Microsoft 推荐的抗钓鱼 MFA
 
-## 实验场景
+✅ 理解 Identity 在 Zero Trust 中的重要作用
+
+---
+
+# 实验场景
 
 Contoso 公司已经部署：
 
@@ -62,122 +92,187 @@ Contoso 公司已经部署：
 - SharePoint Online
 - Microsoft 365 Copilot
 
-近期安全团队发现：
+安全团队发现：
 
 某员工在钓鱼网站中输入了企业账号密码。
 
-攻击者仅获得：
+攻击者已经获得：
 
 ```text
+用户名
+
+密码
 ```
 
 安全团队希望验证：
 
-即使密码已经泄露，
-
-攻击者是否仍然能够登录企业系统？
-
----
-
-## 准备身份验证器
-
-### Step 1
-
-在手机上安装讲师指定的身份验证器。默认建议使用 Microsoft Authenticator；只有在租户已启用 OATH 软件令牌并提供对应注册二维码时，才使用第三方 TOTP 应用。
-
-#### 方式一（推荐）
-
-Microsoft Authenticator
-
----
-
-#### 方式二（仅在讲师确认后使用）
-
-第三方 TOTP 应用：
-
 ```text
-腾讯身份验证器
+即使密码已经泄露
+
+攻击者是否还能进入企业系统？
 ```
 
-搜索并打开。
+---
+
+# 任务 1 - 激活实验管理员角色
+
+本实验需要使用：
+
+```text
+zta-adminXX
+```
+
+管理员账户。
 
 ---
 
-> [!NOTE]
->
-> 第三方 TOTP 应用只有在租户允许 OATH 软件令牌、账号已完成对应注册，并且讲师提供的是 Entra 生成的注册二维码时才可用。若租户要求 Microsoft Authenticator、号码匹配或其他认证方式，请按租户配置操作。
+## Step 1
+
+打开：
+
+```text
+https://entra.microsoft.com
+```
+
+使用：
+
+```text
+zta-adminXX
+```
+
+登录。
 
 ---
 
-## 绑定实验账号
+## Step 2
 
-### Step 1
+进入：
 
-打开已完成注册的身份验证器。
+```text
+Identity Governance
+
+↓
+
+Privileged Identity Management
+
+↓
+
+My Roles
+
+↓
+
+Microsoft Entra Roles
+```
+
+---
+
+## Step 3
+
+在 Eligible Assignments 中找到：
+
+```text
+Authentication Administrator
+```
+
+中文：
+
+```text
+身份验证管理员
+```
+
+---
+
+## Step 4
 
 选择：
 
 ```text
-添加账号
+Activate
 ```
 
 ---
 
-### Step 2
+## Step 5
 
-扫描讲师提供的、与本人账号对应的 Entra 注册二维码。
-
-例如，二维码对应本人分配的实验账号。
+完成 MFA。
 
 ---
 
-### Step 3
+## Step 6
 
-完成绑定后，
-
-应用中应显示：
+填写理由：
 
 ```text
-6 位动态验证码
+Lab03 - MFA Validation
 ```
 
-例如：
+---
+
+## Step 7
+
+提交激活。
+
+---
+
+## 验证结果
+
+确认：
 
 ```text
-123456
+Authentication Administrator
+
+↓
+
+Active
 ```
 
----
-
-### Step 4
-
-等待验证码正常刷新。
-
-验证码会自动更新。
-
-记录当前验证码：
-
-_________________________
-
----
-
-## 登录实验门户
-
-### Step 1
-
-打开浏览器，访问 Microsoft 365 门户：[Microsoft 365](https://www.office.com/)
-
----
-
-### Step 2
-
-输入本人分配的实验账号：
+记录到期时间：
 
 ```text
-本人分配的实验账号
+____________________
 ```
+
+---
+
+# 任务 2 - 登录普通用户账户
+
+使用：
+
+```text
+zta-userXX
+```
+
+普通用户账户。
+
+---
+
+## Step 1
+
+打开：
+
+```text
+https://www.microsoft365.com
+```
+
+---
+
+## Step 2
+
+输入：
+
+```text
+zta-userXX
+```
+
+---
+
+## Step 3
 
 输入密码。
+
+---
+
+## Step 4
 
 选择：
 
@@ -185,232 +280,454 @@ _________________________
 登录
 ```
 
+---
 
-### Step 3
+# 任务 3 - 完成 MFA 验证
 
-如果 Conditional Access 或租户认证策略要求 MFA，系统将触发 MFA 验证。页面和验证方式以实际租户配置为准。
+根据租户配置，
 
-页面显示：
+系统可能要求：
 
-```text
-请输入验证码
-```
+### Microsoft Authenticator
+
+或
+
+### TOTP 动态验证码
+
+或
+
+### 号码匹配
+
+或
+
+### Passkey
+
+实际方式以当前 Tenant 配置为准。
 
 ---
 
-### Step 4
+## Step 1
 
-打开已完成注册的身份验证器。
-
-输入当前验证码。
-
-选择：
-
-```text
-验证
-```
-
-
-### Step 5
-
-验证成功后，
-
-成功进入实验系统。
+完成 MFA。
 
 ---
 
-## 验证登录结果
+## Step 2
 
-### 观察
+记录触发情况：
 
-成功登录后记录：
-
-| 项目 | 结果 |
-|--------|--------|
-| MFA 已触发 | □ 是 □ 否 |
-| 登录成功 | □ 是 □ 否 |
+| 验证项 | 结果 |
+|----------|----------|
+| 是否要求 MFA | □ 是 □ 否 |
+| 是否完成验证 | □ 是 □ 否 |
+| 是否成功登录 | □ 是 □ 否 |
 
 ---
 
-## 模拟密码泄露攻击
+# 任务 4 - 模拟密码泄露
 
-### 场景
+## 攻击场景
 
-攻击者仅获得：
+攻击者已经获得：
 
 ```text
 用户名
+
 密码
 ```
 
-但攻击者没有完成该账号注册的第二个验证因素，也没有已登录会话或有效访问令牌：
+但攻击者不具备：
 
-身份验证器或动态验证码。
+```text
+Microsoft Authenticator
 
-仅凭用户名和密码，攻击者是否能够完成本次登录？
+动态验证码
 
+Passkey
+
+FIDO2 Key
+```
+
+等第二因素。
+
+---
+
+## 问题
+
+攻击者是否能够成功登录？
+
+```text
 □ 可以
 
 □ 不可以
+```
 
 ---
 
-### 原因分析
+## 请说明原因
 
-请填写：
+________________________________________________
 
-_________________________________
+________________________________________________
 
-_________________________________
-
-_________________________________
+________________________________________________
 
 ---
 
----
+# 任务 5 - 理解 Microsoft MFA
 
-## 分析 MFA 的价值
+## 观察
 
-### 问题 1
+企业仅使用：
 
-如果企业未启用 MFA 或其他等效的强认证，
+```text
+密码
+```
 
-密码泄露后可能发生什么？
+时：
 
-_________________________________
-
-_________________________________
-
----
-
-### 问题 2
-如果攻击者在国外尝试登录，且租户配置了基于位置或登录风险的 Conditional Access，
-
-是否可能触发额外保护？
-
-□ 是
-
-□ 否
+攻击者获得密码即可登录。
 
 ---
 
-### 问题 3
+企业启用：
 
-在部署 Microsoft 365 Copilot 后，
+```text
+密码
+
++
+
+MFA
+```
+
+后：
+
+攻击者除了密码之外，
+
+还需要：
+
+```text
+第二验证因素
+```
+
+才能完成登录。
+
+---
+
+## 思考
+
+MFA 带来的价值是什么？
+
+________________________________________________
+
+________________________________________________
+
+________________________________________________
+
+---
+
+# 任务 6 - 理解 Authentication Strength
+
+Microsoft Entra 提供：
+
+```text
+Authentication Strength
+```
+
+用于定义登录时允许使用的认证方式。
+
+---
+
+### 基础 MFA
+
+例如：
+
+```text
+Password
+
++
+
+SMS
+
+或
+
+Authenticator
+```
+
+---
+
+### Passwordless MFA
+
+例如：
+
+```text
+Microsoft Authenticator
+
+Passkey
+
+Windows Hello
+```
+
+---
+
+### Phishing-resistant MFA
+
+微软推荐：
+
+```text
+Passkey
+
+Windows Hello for Business
+
+FIDO2 Security Key
+
+Certificate-based Authentication
+```
+
+---
+
+## 思考题
+
+以下哪些属于微软推荐的
+
+Phishing-resistant MFA？
+
+```text
+□ SMS
+
+□ Email OTP
+
+□ Microsoft Authenticator Code
+
+□ FIDO2 Security Key
+
+□ Windows Hello for Business
+
+□ Passkey
+```
+
+---
+
+# 任务 7 - AI 时代身份安全
+
+## 场景
+
+企业已经部署：
+
+```text
+Microsoft 365 Copilot
+```
+
+---
 
 如果账号被盗，
 
-□ 文档
+攻击者可能访问：
 
+```text
+邮件
 
-□ Copilot 可以访问的数据
+文档
 
----
+SharePoint 文件
 
-### 讨论
+Teams 内容
 
-为什么 AI 时代必须强化身份保护？
-
-
-_________________________________
-
-_________________________________
-
-_________________________________
+Copilot 可访问的数据
+```
 
 ---
 
-## Zero Trust 观点
+## 问题
 
-在传统环境中：
+为什么在 AI 时代必须强化身份验证？
+
+________________________________________________
+
+________________________________________________
+
+________________________________________________
+
+---
+
+# Zero Trust 观点
+
+传统模式：
 
 ```text
 知道密码
+
 =
+
 可信用户
 ```
 
 ---
 
-在 Zero Trust 环境中：
+Zero Trust：
 
 ```text
 知道密码
+
 ≠
+
 可信用户
 ```
 
-系统需要持续验证：
+系统还需要持续验证：
 
-- 用户身份
-- 登录风险
-- 设备状态
-- 访问上下文
+```text
+用户身份
+
+设备状态
+
+认证强度
+
+访问风险
+
+访问位置
+
+访问行为
+```
+
+---
 
 这就是：
 
 ```text
 Never Trust
+
 Always Verify
 ```
 
-原则。
-
 ---
 
-## 验证成功
+# Microsoft 推荐身份保护路线
 
-如果您完成了以下操作，则本实验完成：
-
-✅ 成功绑定身份验证器
-
-✅ 成功生成动态验证码
-
-✅ 成功完成 MFA 登录
-
-✅ 理解密码泄露风险
-
-✅ 理解 MFA 工作机制
-
-✅ 理解 Identity 是 Zero Trust 核心控制面
-
----
-
-## 实验总结
-
-在本实验中，您验证了：
+传统方式：
 
 ```text
-密码 ≠ 身份
+Password
 ```
 
-即使攻击者获得账号密码，
+↓
 
-通常仍无法仅凭密码完成 MFA 登录；但 MFA 不能阻止所有会话窃取、AiTM 或 MFA 疲劳攻击。
+```text
+Password + SMS
+```
 
-这也是企业部署：
+↓
 
-- Microsoft 365
-- Azure
-- Microsoft 365 Copilot
-- AI Agent
-
-之前最优先实施的 Zero Trust 控制措施之一。
+```text
+Password + OTP
+```
 
 ---
 
-## 下一实验
+现代方式：
 
-➡ [实验 04 - 合规设备访问验证](../Lab04-Compliant-Device-Access-Validation/Lab04-Compliant-Device-Access-Validation.html)
+```text
+Passwordless Authentication
+```
 
-在下一实验中，您将体验：
+↓
+
+```text
+Passkey
+```
+
+↓
+
+```text
+Phishing-resistant MFA
+```
+
+---
+
+# 实验验证
+
+完成以下内容：
+
+```text
+□ 已激活 Authentication Administrator
+
+□ 已完成 MFA 登录
+
+□ 已验证密码泄露场景
+
+□ 已理解 MFA 工作机制
+
+□ 已理解 Authentication Strength
+
+□ 已理解 Phishing-resistant MFA
+
+□ 已理解 Zero Trust Identity
+```
+
+---
+
+# 实验总结
+
+本实验验证：
+
+```text
+密码
+
+≠
+
+身份
+```
+
+即使攻击者获得密码，
+
+通常仍无法仅凭密码完成登录。
+
+企业应逐步减少依赖：
+
+- SMS
+- Voice
+- Email OTP
+
+并逐步采用：
+
+- Microsoft Authenticator
+- Windows Hello for Business
+- Passkey
+- FIDO2 Security Key
+
+等更强的身份验证方式。
+
+Identity 是 Zero Trust 的第一道防线。
+
+---
+
+# 下一实验
+
+➡ [实验 04 - 合规设备访问验证](../Lab04-Intune-Compliance-Validation/Lab04-Intune-Compliance-Validation.html)
+
+下一实验将验证：
 
 ```text
 正确用户
+
 +
+
 可信设备
+
 =
+
 允许访问企业资源
 ```
 
-验证 Conditional Access 和 Device Compliance 的实际效果。
+并体验：
+
+```text
+Conditional Access
+
++
+
+Device Compliance
+```
+
+的实际效果。
+``

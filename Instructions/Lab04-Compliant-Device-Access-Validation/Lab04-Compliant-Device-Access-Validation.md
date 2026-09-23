@@ -1,7 +1,7 @@
 ---
 lab:
   title: 实验 04 - 合规设备访问验证
-  description: 在本实验中，您将验证 Microsoft Entra 条件访问策略，并体验合规设备与非合规设备访问企业资源时的差异。
+  description: 验证 Microsoft Entra 条件访问和 Intune 合规设备策略，体验同一用户在不同设备上的访问差异。
   duration: 25 分钟
   level: 200
   islab: true
@@ -15,305 +15,299 @@ lab:
 
 # 实验 04 - 合规设备访问验证
 
-## 概述
-
-在实验 03 中，您已经验证：
-
-```text
-密码 ≠ 身份
-```
-
-即使密码已经泄露，
-
-MFA 仍然可以保护企业账号。
-
-然而，攻击者也可能使用：
-
-- 受感染设备
-- 未托管设备
-- 个人设备
-
-访问企业资源。
-
-因此，Zero Trust 不仅验证用户身份，
-
-还需要验证：
-
-```text
-设备是否可信
-```
-
-Microsoft Entra 条件访问（Conditional Access）结合 Microsoft Intune 合规性管理，可以确保：
-
-```text
-正确用户 + 可信设备 = 允许访问
-```
-
-在本实验中，您将体验同一个账号在不同设备上的访问结果。
-
----
-
 ## 实验目标
 
 完成本实验后，您将能够：
 
-✅ 理解 Conditional Access 工作原理
+✅ 激活 Intune Administrator
 
-✅ 理解设备合规性（Device Compliance）
+✅ 查看 Intune 设备状态
 
-✅ 验证非托管设备访问限制
+✅ 理解 Device Compliance
 
-✅ 验证合规设备访问成功
+✅ 理解 Conditional Access
 
-✅ 理解用户身份与设备状态联合决策机制
+✅ 验证合规设备访问
+
+✅ 验证非合规设备访问限制
 
 ✅ 理解 Zero Trust 设备信任模型
 
 ---
 
-## 实验场景
+# 实验场景
 
-Contoso 公司已部署：
+Contoso 已部署：
 
-- Microsoft Entra ID
+- Microsoft Entra
 - Microsoft Intune
 - Conditional Access
 
 企业规定：
 
 ```text
-仅允许合规设备访问项目文档
+仅允许合规设备访问企业文档
 ```
 
-即：
-
-- 已注册设备
-- Intune 托管设备
-- 满足安全策略设备
-
-才允许访问企业资源。
-
----
-
-## 查看条件访问策略
-
-### Step 1
-
-讲师展示 Conditional Access 策略。
-
-本实验至少需要两类控制：一条要求 MFA 的策略，以及一条针对 SharePoint Online 要求合规设备的策略。若租户将两项要求合并在同一策略中，请以讲师展示的实际配置为准。
-
-示例规则如下：
+访问条件：
 
 ```text
-Users:
-All Employees
+用户身份有效
 
-Application:
-SharePoint Online
++
+完成 MFA
 
-Grant Access:
-Require Compliant Device
++
+设备合规
+
+=
+
+允许访问
 ```
 
 ---
 
-### Step 2
+# 任务1 激活 Intune Administrator
 
-记录策略要求：
-
-□ 要求登录用户
-
-□ 要求 MFA
-
-□ 要求合规设备
-
----
-
-### 思考
-
-为什么企业需要同时验证：
+使用：
 
 ```text
-用户 + 设备
+zta-adminXX
 ```
 
-而不是仅验证账号密码？
+登录：
 
-记录答案：
+```text
+https://entra.microsoft.com
+```
 
-________________________________________________
+进入：
 
-________________________________________________
+```text
+Identity Governance
+↓
+Privileged Identity Management
+↓
+My Roles
+```
+
+在 Eligible Assignments 中找到：
+
+```text
+Intune Administrator
+```
+
+点击：
+
+```text
+Activate
+```
+
+完成：
+
+```text
+MFA
+```
+
+输入理由：
+
+```text
+Lab04 - Intune Compliance Validation
+```
+
+提交激活。
 
 ---
 
-## 使用个人电脑访问资源
+## 验证
 
-### Step 1
-
-使用实验账号登录：
+确认：
 
 ```text
-以实际实验账户为准。
+Intune Administrator
+
+↓
+
+Active
 ```
 
-完成 MFA 验证。
-
----
-
-### Step 2
-
-打开讲师在实验开始时提供的 SharePoint 地址，并将地址记录在下方：
+记录到期时间：
 
 ```text
-SharePoint Site URL：____________________________
+____________________
 ```
 
 ---
 
-### Step 3
+# 任务2 查看设备状态
 
-尝试打开以下文件：
-
-```text
-Launch Readiness Plan.docx
-```
-
-或：
+管理员账户进入：
 
 ```text
-Project Phoenix Overview.docx
+https://intune.microsoft.com
 ```
 
----
+进入：
 
-### Step 4
+```text
+Devices
+↓
+All Devices
+```
 
-观察系统返回结果。
+找到实验用设备。
 
 记录：
 
-□ 允许访问
-
-□ 拒绝访问
-
-□ 提示设备不符合要求
-
----
-
-### 观察
-
-记录系统返回信息：
-
-________________________________________________
-
-________________________________________________
+| 项目 | 结果 |
+|--------|--------|
+| Device Name | __________ |
+| Managed | □ Yes □ No |
+| Compliant | □ Yes □ No |
+| Ownership | __________ |
 
 ---
 
-## 使用合规设备访问资源
+# 任务3 查看条件访问策略
 
-### Step 1
+讲师展示实验策略。
 
-与同组学员前往演示设备区域。
-
-本实验使用：
+观察内容：
 
 ```text
-受支持的 Windows 版本 + Microsoft Intune + Compliant Device
+Users
 ```
 
-实验设备。
-
----
-
-### Step 2
-
-登录相同账号：
-
 ```text
-以实际实验账户为准。
+Applications
 ```
 
-完成 MFA。
+```text
+Grant Controls
+```
 
----
-
-### Step 3
-
-访问同一 SharePoint 地址。
-
-打开：
+确认是否包含：
 
 ```text
-Launch Readiness Plan.docx
+□ Require MFA
+
+□ Require compliant device
 ```
 
 ---
 
-### Step 4
+# 任务4 使用个人电脑访问资源
 
-观察访问结果。
+使用：
 
-记录：
+```text
+zta-userXX
+```
 
+登录。
+
+使用：
+
+```text
+学员自带设备
+```
+
+访问讲师提供的：
+
+```text
+SharePoint 站点
+```
+
+尝试打开：
+
+```text
+讲师指定实验文件
+```
+
+记录结果：
+
+```text
 □ 成功访问
 
-□ 无法访问
+□ 被阻止
+
+□ 要求设备合规
+```
+
+记录错误信息：
+
+________________________________
+
+________________________________
 
 ---
 
-### Step 5
+# 任务5 使用 Intune 合规设备访问资源
 
-查看文件内容。
+在实验区使用：
 
-确认能够：
+```text
+Intune 合规 Windows 11 PC
+```
 
-- 浏览文档
-- 下载文件
-- 编辑内容（如已授权）
+使用同一个：
+
+```text
+zta-userXX
+```
+
+登录。
+
+访问相同：
+
+```text
+SharePoint 站点
+```
+
+打开相同实验文件。
+
+记录结果：
+
+```text
+□ 成功访问
+
+□ 被阻止
+```
 
 ---
 
-## 对比结果
+# 对比分析
 
-### 对比分析
+填写：
 
-填写下表：
-
-| 访问场景 | 结果 |
-|----------|----------|
-| 个人电脑 | ______ |
-| Intune 托管设备 | ______ |
+| 场景 | 结果 |
+|--------|--------|
+| 学员自带设备 | __________ |
+| Intune合规设备 | __________ |
 
 ---
 
-### 思考
+## 思考
 
 为什么同一个用户：
 
 ```text
-以实际实验账户为准。
+zta-userXX
 ```
 
 在不同设备上会得到不同结果？
 
-记录答案：
+_________________________________
 
-________________________________________________
+_________________________________
 
-________________________________________________
-
-________________________________________________
+_________________________________
 
 ---
 
-## Conditional Access 分析
+# Conditional Access 决策逻辑
 
-### Zero Trust 决策逻辑
-
-本次访问过程实际验证：
+本实验实际验证：
 
 ```text
 IF
@@ -322,7 +316,7 @@ User = Valid
 
 AND
 
-MFA = Completed
+MFA = Success
 
 AND
 
@@ -335,128 +329,116 @@ Allow Access
 
 ---
 
-### 问题
+# AI 时代的设备安全
 
-如果员工使用：
+如果攻击者获得：
 
-□ 个人电脑
+```text
+正确用户名
+正确密码
+```
 
-□ 未打补丁电脑
+甚至完成：
 
-□ 被恶意软件感染设备
+```text
+MFA
+```
 
-访问企业文档，
+但使用：
 
-企业是否应该允许访问？
+```text
+非合规设备
+```
 
-□ 是
-
-□ 否
-
----
-
-### 原因
-
-_________________________________
-
-_________________________________
+系统仍然可以阻止访问。
 
 ---
 
-## AI 时代的设备安全
-
-Contoso 计划部署：
-
-- Microsoft 365 Copilot
-- Enterprise Search
-- AI Agent
-
----
-
-### 思考
+## 思考
 
 如果攻击者通过非合规设备访问：
 
 ```text
 Copilot
+
+SharePoint
+
+Teams
+
+Enterprise Search
 ```
 
-可能获得哪些信息？
+可能获得哪些数据？
 
-请选择：
-
+```text
 □ 邮件
 
-□ Teams 消息
+□ Teams消息
 
-□ SharePoint 文档
+□ SharePoint文档
 
 □ 企业知识库
+```
 
 ---
 
-### 讨论
+# 实验验证
 
-为什么 AI 部署前必须完成设备合规建设？
+完成以下内容：
 
-_________________________________
+```text
+□ 已激活 Intune Administrator
 
-_________________________________
+□ 已查看设备状态
 
-_________________________________
+□ 已查看条件访问策略
 
----
+□ 已使用个人设备访问资源
 
-## 验证成功
+□ 已使用合规设备访问资源
 
-如果您完成以下操作，则本实验完成：
+□ 已验证不同访问结果
 
-✅ 完成 MFA 登录
+□ 已理解 Device Compliance
 
-✅ 使用个人电脑访问资源
-
-✅ 使用合规设备访问资源
-
-✅ 观察条件访问策略效果
-
-✅ 理解 Device Compliance
-
-✅ 理解 Conditional Access
+□ 已理解 Conditional Access
+```
 
 ---
 
-## 实验总结
+# 实验总结
 
-在本实验中，您验证了：
+本实验验证：
 
 ```text
 正确用户
+
 ≠
+
 自动允许访问
 ```
 
-Zero Trust 要求同时验证：
+Zero Trust 需要同时验证：
 
 ```text
 身份
+
 +
-设备
+
+MFA
+
 +
-访问条件
+
+设备状态
+
++
+
+访问策略
 ```
 
-只有满足全部条件，
+只有全部满足条件，
 
-系统才会允许访问企业资源。
-
-这正是：
-
-```text
-Never Trust
-Always Verify
-```
-
-原则在设备安全领域的体现。
+系统才允许访问企业资源。
 
 ---
 
